@@ -4,7 +4,7 @@
 var socketio, io, PwmDriver, pwm, makePwm, Gpio;
 
 socketio = require('socket.io');
-makePwm = require('adafruit-pca9685');
+makePwm = require('./adafruit-pca9685');
 pwm = makePwm({"freq": 50, "correctionFactor": 1.118});
 
 // deal with any signals and cleanup
@@ -40,6 +40,9 @@ exports.listen = function(server) {
 
 function handlePwmRequest(socket) {
     socket.on('pwm', function(channel, value) {
+console.log("Got Data Channel: " + channel);
+console.log("Got Data Value: " + value);
+
 	var ch = parseInt(channel);
         var v = parseInt(value);
 	pwm.setPwm(ch, 0, v); 
@@ -48,6 +51,8 @@ function handlePwmRequest(socket) {
 
 function handlePwmPulseRequest(socket) {
     socket.on('pwmpulse', function(channel, value) {
+console.log("Got Data Channel: " + channel);
+console.log("Got Data Value: " + value);
 	var ch = parseInt(channel);
         var v = parseInt(value);
 	pwm.setPulse(ch, v); 
